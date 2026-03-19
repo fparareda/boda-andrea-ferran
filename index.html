@@ -170,7 +170,9 @@
     .id-side.left  { transform: translateX(-50px); border-right: 1px solid rgba(197,165,90,0.3); }
     .id-side.right { transform: translateX(50px); }
     .id-side.in    { opacity: 1; transform: translateX(0); }
-    .id-flag  { font-size: 2.8rem; display: block; margin-bottom: 12px; }
+    .id-flag  { display: block; margin-bottom: 12px; line-height: 1; }
+    .id-flag svg { width: 48px; height: 32px; border-radius: 3px; }
+    .id-flag-emoji { font-size: 2.8rem; display: block; margin-bottom: 12px; }
     .id-label { font-family: 'Inter', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-light); margin-bottom: 6px; }
     .id-name  { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 5vw, 1.8rem); }
     .id-close {
@@ -195,11 +197,10 @@
     #s7 { background: var(--cream); }
     .photo-box {
       width: 220px; height: 280px; border-radius: 16px;
-      background: var(--cream-dark); border: 2px dashed rgba(197,165,90,0.35);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-light); font-size: 0.78rem; letter-spacing: 1px;
-      margin: 0 auto 28px; text-align: center; padding: 16px;
+      overflow: hidden; margin: 0 auto 28px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
     }
+    .photo-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ─── 8. VENECIA ───────────────────── */
     #s8 { background: linear-gradient(160deg, #12202f 0%, #0b1724 100%); }
@@ -426,13 +427,22 @@
   <section id="s4" class="section">
     <div class="id-split">
       <div class="id-side left" id="id-l">
-        <span class="id-flag">🇪🇸</span>
-        <div class="id-label">Él, catalán</div>
+        <!-- Senyera catalana -->
+        <span class="id-flag">
+          <svg viewBox="0 0 6 4" xmlns="http://www.w3.org/2000/svg">
+            <rect width="6" height="4" fill="#FCDD09"/>
+            <rect y="0.5"  width="6" height="0.5" fill="#DA121A"/>
+            <rect y="1.5"  width="6" height="0.5" fill="#DA121A"/>
+            <rect y="2.5"  width="6" height="0.5" fill="#DA121A"/>
+            <rect y="3.5"  width="6" height="0.5" fill="#DA121A"/>
+          </svg>
+        </span>
+        <div class="id-label">Ferran, catalán</div>
         <div class="id-name">Ferran</div>
       </div>
       <div class="id-side right" id="id-r">
-        <span class="id-flag">🇨🇴</span>
-        <div class="id-label">Yo, colombiana</div>
+        <span class="id-flag-emoji">🇨🇴</span>
+        <div class="id-label">Andrea, colombiana</div>
         <div class="id-name">Andrea</div>
       </div>
     </div>
@@ -461,7 +471,9 @@
 
   <!-- 7. ALEJITO -->
   <section id="s7" class="section">
-    <div class="photo-box r">📷 foto de los tres aquí</div>
+    <div class="photo-box r">
+      <img src="IMG_2135.jpeg" alt="Andrea, Ferran y Alejito">
+    </div>
     <div class="story-block">
       <div class="sl r d2">Esto no es solo</div>
       <div class="sl r d3">una historia de dos…</div>
@@ -513,6 +525,7 @@
         <div class="d-label">Lugar</div>
         <div class="d-val">Hacienda La Armenia</div>
         <div class="d-sub">Sopó, Cundinamarca — Colombia</div>
+        <a href="https://maps.google.com/?q=Hacienda+La+Armenia+Sopo+Cundinamarca+Colombia" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--gold);text-decoration:none;letter-spacing:0.5px;border-bottom:1px solid rgba(197,165,90,0.4);padding-bottom:1px;">📍 Cómo llegar</a>
       </div>
       <div class="d-divider"></div>
       <div class="d-item" style="margin-bottom:0">
