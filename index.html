@@ -935,22 +935,33 @@
 
   /* ── PLAYLIST ──────────────────────────── */
   function submitSong() {
-    const input = document.getElementById('pl-song');
-    const msg   = document.getElementById('pl-msg');
-    const song  = input.value.trim();
-    if (!song) return;
-    const hash = new URLSearchParams(window.location.search).get('invite') || '';
+    const input   = document.getElementById('pl-song');
+    const msg     = document.getElementById('pl-msg');
+    const song    = input.value.trim();
+    if (!song) { msg.textContent = 'Escribe una canción primero 🎵'; return; }
+
+    const hash    = new URLSearchParams(window.location.search).get('invite') || '';
+    const nombre  = (document.getElementById('rsvp-nombre')   || {}).value || '';
+    const apellido= (document.getElementById('rsvp-apellido') || {}).value || '';
+
+    // Split "Canción - Artista" if the user wrote it that way
+    let cancion = song, artista = '';
+    const dash = song.indexOf(' - ');
+    if (dash !== -1) { cancion = song.slice(0, dash).trim(); artista = song.slice(dash + 3).trim(); }
+
+    msg.textContent = 'Enviando…';
+
     fetch(URL_AS, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'song', cancion: song, hash })
+      body: JSON.stringify({ action: 'song', cancion, artista, hash, nombre, apellido })
     })
     .then(r => r.json())
     .then(d => {
       if (d.ok) { msg.textContent = '¡Canción añadida! 🎶'; input.value = ''; }
       else       { msg.textContent = 'Algo salió mal, inténtalo de nuevo.'; }
     })
-    .catch(() => { msg.textContent = 'Error de conexión.'; });
+    .catch(() => { msg.textContent = 'Error de conexión, inténtalo de nuevo.'; });
   }
 </script>
 </body>
