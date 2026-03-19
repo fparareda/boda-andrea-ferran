@@ -6,7 +6,7 @@
   <title>Andrea & Ferran · 12.06.2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -35,28 +35,77 @@
     }
 
     /* ════════════════════════════
-       COVER — SOBRE SELLADO
+       BODY LOCKED INITIALLY
     ════════════════════════════ */
-    .cover {
-      position: relative;
-      height: 100svh;
-      min-height: 600px;
+    body.locked { overflow: hidden; }
+
+    /* ════════════════════════════
+       ENVELOPE OVERLAY
+    ════════════════════════════ */
+    #env-overlay {
+      position: fixed;
+      inset: 0;
+      max-width: 430px;
+      margin: 0 auto;
       background: var(--blush);
+      z-index: 200;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+      cursor: pointer;
+      /* slide-up transition */
+      transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1);
     }
 
-    /* Líneas del sobre */
-    .envelope-svg {
+    #env-overlay.slide-up {
+      transform: translateY(-105%);
+    }
+
+    /* Líneas de pliegue del sobre */
+    #env-overlay .envelope-svg {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
+    }
+
+    /* ── FLAP: mitad superior que se dobla hacia atrás ── */
+    #env-flap-wrapper {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 52%;
+      perspective: 700px;
+    }
+
+    #env-flap {
+      width: 100%;
+      height: 100%;
+      background: var(--blush-dark);
+      /* Triángulo que apunta hacia abajo */
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: center top;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      backface-visibility: hidden;
+    }
+
+    #env-overlay.opening #env-flap {
+      transform: rotateX(180deg);
+    }
+
+    /* ── Contenido central del sobre ── */
+    #env-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: opacity 0.3s ease;
+    }
+
+    #env-overlay.opening #env-content {
+      opacity: 0;
     }
 
     /* Sello de lacre */
@@ -75,7 +124,11 @@
       position: relative;
       margin-bottom: 2rem;
       flex-shrink: 0;
+      transition: transform 0.15s ease;
     }
+
+    .wax-seal:hover { transform: scale(1.05); }
+    .wax-seal:active { transform: scale(0.95); }
 
     .wax-seal::before {
       content: '';
@@ -94,7 +147,7 @@
     }
 
     .wax-initials {
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Playfair Display', serif;
       font-size: 2rem;
       color: rgba(255,255,255,0.92);
       text-shadow: 0 1px 3px rgba(80,30,15,0.4);
@@ -104,14 +157,16 @@
     }
 
     .cover-exclusive {
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-style: italic;
       color: var(--ink);
       opacity: 0.75;
-      line-height: 1.4;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
     }
 
-    .scroll-hint {
+    .tap-hint {
       position: absolute;
       bottom: 2rem;
       left: 50%;
@@ -121,9 +176,10 @@
       align-items: center;
       gap: 0.4rem;
       animation: float 2.5s ease-in-out infinite;
+      white-space: nowrap;
     }
 
-    .scroll-hint span {
+    .tap-hint span {
       font-size: 0.6rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -131,11 +187,23 @@
       opacity: 0.7;
     }
 
-    .scroll-hint svg { width: 16px; color: var(--seal); opacity: 0.7; }
+    .tap-hint svg { width: 16px; color: var(--seal); opacity: 0.7; }
 
     @keyframes float {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── Animación del lacre al romper ── */
+    @keyframes seal-crack {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.18) rotate(3deg); }
+      70%  { transform: scale(0.9) rotate(-2deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+    }
+
+    .wax-seal.cracking {
+      animation: seal-crack 0.35s ease-out forwards;
     }
 
     /* ════════════════════════════
@@ -170,8 +238,8 @@
     }
 
     .letter-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(3rem, 14vw, 4.2rem);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 10vw, 3.2rem);
       color: var(--ink);
       line-height: 1.1;
     }
@@ -271,8 +339,8 @@
     }
 
     .sec-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
       color: var(--ink);
       margin-bottom: 1.8rem;
     }
@@ -294,8 +362,8 @@
     .cal-month {
       background: var(--blush);
       padding: 0.9rem;
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
       color: var(--ink);
       border-bottom: 1px solid var(--blush-dark);
     }
@@ -384,8 +452,8 @@
     }
 
     .venue-name {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
       color: var(--ink);
     }
 
@@ -493,8 +561,8 @@
     }
 
     .song-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.7rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
       color: var(--ink);
     }
 
@@ -640,6 +708,23 @@
     }
 
     /* ════════════════════════════
+       SALUDO PERSONALIZADO
+    ════════════════════════════ */
+    #guest-banner {
+      display: none;
+      background: var(--blush-dark);
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+
+    #guest-banner p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      font-style: italic;
+    }
+
+    /* ════════════════════════════
        RSVP
     ════════════════════════════ */
     .rsvp-section {
@@ -657,7 +742,7 @@
     /* sello decorativo fondo */
     .rsvp-section::before {
       content: 'A&F';
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Playfair Display', serif;
       font-size: 12rem;
       color: rgba(255,255,255,0.06);
       position: absolute;
@@ -685,20 +770,88 @@
       margin: 0 auto 2rem;
     }
 
-    .rsvp-btn {
-      display: inline-block;
-      padding: 0.85rem 2.2rem;
+    /* Formulario RSVP */
+    .rsvp-form {
+      max-width: 320px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .rsvp-form input,
+    .rsvp-form select,
+    .rsvp-form textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .rsvp-form input::placeholder,
+    .rsvp-form textarea::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .rsvp-form input:focus,
+    .rsvp-form select:focus,
+    .rsvp-form textarea:focus {
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    .rsvp-form select option {
+      color: var(--ink);
+      background: white;
+    }
+
+    .rsvp-form textarea {
+      resize: none;
+      min-height: 70px;
+    }
+
+    .rsvp-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .rsvp-submit {
+      padding: 0.85rem 2rem;
       background: white;
       color: var(--seal-dark);
+      border: none;
       border-radius: 999px;
+      font-family: 'Lato', sans-serif;
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      text-decoration: none;
+      cursor: pointer;
       transition: opacity 0.2s;
+      margin-top: 0.5rem;
     }
 
-    .rsvp-btn:hover { opacity: 0.88; }
+    .rsvp-submit:hover { opacity: 0.88; }
+    .rsvp-submit:disabled { opacity: 0.5; cursor: default; }
+
+    #rsvp-success {
+      display: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: white;
+      font-style: italic;
+      line-height: 1.7;
+      padding: 1rem 0;
+      position: relative;
+      z-index: 1;
+    }
 
     /* ════════════════════════════
        FOOTER
@@ -710,8 +863,8 @@
     }
 
     .footer-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
       color: var(--ink);
     }
 
@@ -726,35 +879,41 @@
 </head>
 <body>
 
-  <!-- ══════════ COVER — SOBRE ══════════ -->
-  <section class="cover">
+  <!-- ══════════ ENVELOPE OVERLAY ══════════ -->
+  <div id="env-overlay">
 
-    <!-- SVG: líneas de pliegue del sobre -->
-    <svg class="envelope-svg" viewBox="0 0 430 700" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- pliegue superior izquierdo → centro -->
-      <line x1="0" y1="0" x2="215" y2="310" stroke="#d4bfb8" stroke-width="1" opacity="0.6"/>
-      <!-- pliegue superior derecho → centro -->
-      <line x1="430" y1="0" x2="215" y2="310" stroke="#d4bfb8" stroke-width="1" opacity="0.6"/>
-      <!-- pliegue inferior izquierdo → centro -->
-      <line x1="0" y1="700" x2="215" y2="310" stroke="#d4bfb8" stroke-width="0.8" opacity="0.4"/>
-      <!-- pliegue inferior derecho → centro -->
-      <line x1="430" y1="700" x2="215" y2="310" stroke="#d4bfb8" stroke-width="0.8" opacity="0.4"/>
-    </svg>
-
-    <!-- Sello de lacre -->
-    <div class="wax-seal">
-      <span class="wax-initials">A&F</span>
+    <!-- Flap superior que se dobla -->
+    <div id="env-flap-wrapper">
+      <div id="env-flap"></div>
     </div>
 
-    <p class="cover-exclusive">Esta invitación es<br>exclusiva para ti</p>
+    <!-- SVG líneas de pliegue -->
+    <svg class="envelope-svg" viewBox="0 0 430 700" preserveAspectRatio="none" fill="none">
+      <line x1="0"   y1="0"   x2="215" y2="310" stroke="#c8b0a8" stroke-width="1"   opacity="0.5"/>
+      <line x1="430" y1="0"   x2="215" y2="310" stroke="#c8b0a8" stroke-width="1"   opacity="0.5"/>
+      <line x1="0"   y1="700" x2="215" y2="310" stroke="#c8b0a8" stroke-width="0.8" opacity="0.35"/>
+      <line x1="430" y1="700" x2="215" y2="310" stroke="#c8b0a8" stroke-width="0.8" opacity="0.35"/>
+    </svg>
 
-    <div class="scroll-hint">
-      <span>Abrir</span>
+    <!-- Contenido central -->
+    <div id="env-content">
+      <div class="wax-seal" id="wax-seal"></div>
+      <p class="cover-exclusive">Ya es oficialmente oficial…<br>Y sí, si estás leyendo esto,<br>ya lo sabes… Nos casamos</p>
+    </div>
+
+    <!-- Pista de toque -->
+    <div class="tap-hint">
+      <span>Toca el sello para abrir</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="6 9 12 15 18 9"/>
       </svg>
     </div>
-  </section>
+  </div>
+
+  <!-- ══════════ BANNER PERSONALIZADO ══════════ -->
+  <div id="guest-banner">
+    <p id="guest-greeting"></p>
+  </div>
 
   <!-- ══════════ CARTA ══════════ -->
   <section class="letter">
@@ -872,31 +1031,6 @@
     </ul>
   </section>
 
-  <!-- ══════════ CANCIÓN ══════════ -->
-  <section class="section section-blush">
-    <p class="sec-label">Ponle música al amor</p>
-    <p class="sec-title">Nuestra canción</p>
-
-    <div class="song-card">
-      <p class="song-note">La canción de nuestra boda</p>
-      <div>
-        <p class="song-title">Can't Help Falling in Love</p>
-        <p class="song-artist">Elvis Presley</p>
-      </div>
-      <a class="song-yt" href="https://www.youtube.com/watch?v=vGJTaP6anOU" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/>
-        </svg>
-        Ver en YouTube
-      </a>
-    </div>
-
-    <div style="margin-top:1.8rem; text-align:center;">
-      <p class="song-suggest-label">¿Tienes una canción que no puede faltar?<br>¡Dínoslo!</p>
-      <a class="song-suggest-link" href="https://wa.me/TU_NUMERO?text=Mi%20canción%20para%20la%20boda%20de%20Andrea%20y%20Ferran:" target="_blank" rel="noopener">Sugerir una canción</a>
-    </div>
-  </section>
-
   <!-- ══════════ DRESS CODE ══════════ -->
   <section class="section">
     <p class="sec-label">¿Cómo vestirse?</p>
@@ -940,15 +1074,11 @@
       </li>
       <li class="tip-item">
         <span class="tip-emoji">🚗</span>
-        <div class="tip-text"><strong>Cómo llegar</strong>Sopó está a ~45 min de Bogotá. Sal con tiempo y si puedes, comparte coche o pide Uber desde Bogotá.</div>
+        <div class="tip-text"><strong>Cómo llegar</strong>Sopó está cerca de La Calera, Cajicá y Bogotá. Desde Bogotá son ~45 min, desde La Calera ~20 min y desde Cajicá ~15 min. Te recomendamos salir con tiempo y si puedes, compartir coche.</div>
       </li>
       <li class="tip-item">
         <span class="tip-emoji">📷</span>
         <div class="tip-text"><strong>Fotos y redes</strong>Habrá fotógrafo profesional. Durante la ceremonia, deja el móvil guardado y disfruta el momento.</div>
-      </li>
-      <li class="tip-item">
-        <span class="tip-emoji">🎁</span>
-        <div class="tip-text"><strong>Regalo</strong>Vuestro cariño es suficiente. Si queréis contribuir a nuestra luna de miel, con gusto lo recibimos.</div>
       </li>
       <li class="tip-item">
         <span class="tip-emoji">🌸</span>
@@ -963,9 +1093,27 @@
     <p class="sec-title">Confirma tu asistencia</p>
     <p class="rsvp-date">Antes del 1 de mayo de 2026</p>
     <p class="rsvp-note">Por favor, haznos saber si podrás acompañarnos en este día tan especial.</p>
-    <a class="rsvp-btn" href="https://wa.me/TU_NUMERO?text=¡Confirmo%20asistencia%20a%20la%20boda%20de%20Andrea%20y%20Ferran!" target="_blank" rel="noopener">
-      Confirmar asistencia
-    </a>
+
+    <div id="rsvp-success">
+      ¡Gracias! 🤍<br>Hemos recibido tu respuesta.<br>¡Nos vemos el 12 de junio!
+    </div>
+
+    <form class="rsvp-form" id="rsvp-form" novalidate>
+      <input type="hidden" id="rsvp-hash" name="hash" value="">
+      <div class="rsvp-form-row">
+        <input type="text" id="rsvp-nombre" name="nombre" placeholder="Nombre" required>
+        <input type="text" id="rsvp-apellido" name="apellido" placeholder="Apellido">
+      </div>
+      <select name="asistencia" id="rsvp-asistencia" required>
+        <option value="" disabled selected>¿Asistirás? *</option>
+        <option value="Sí">Sí, allí estaré 🎉</option>
+        <option value="No">No podré ir 😢</option>
+      </select>
+      <input type="number" name="acompanantes" id="rsvp-acomp" placeholder="Número de acompañantes (0 si vas solo/a)" min="0" max="10">
+      <input type="text" name="dieta" id="rsvp-dieta" placeholder="Dieta especial o alergia (opcional)">
+      <textarea name="notas" id="rsvp-notas" placeholder="Canción que no puede faltar / mensaje (opcional)"></textarea>
+      <button type="submit" class="rsvp-submit" id="rsvp-btn">Confirmar asistencia</button>
+    </form>
   </section>
 
   <!-- ══════════ FOOTER ══════════ -->
@@ -974,5 +1122,108 @@
     <p class="footer-date">12 · Junio · 2026 · Hacienda La Armenia, Sopó</p>
   </footer>
 
+  <script>
+    // ══════════════════════════════════════════
+    //  CONFIGURACIÓN — pega aquí la URL de tu
+    //  Apps Script Web App después de publicarla
+    // ══════════════════════════════════════════
+    const APPS_SCRIPT_URL = 'PEGA_AQUI_TU_URL';
+
+    // ── Animación del sobre ───────────────────
+    document.body.classList.add('locked');
+
+    const overlay = document.getElementById('env-overlay');
+    const seal    = document.getElementById('wax-seal');
+    let opened = false;
+
+    overlay.addEventListener('click', () => {
+      if (opened) return;
+      opened = true;
+
+      seal.classList.add('cracking');
+
+      setTimeout(() => { overlay.classList.add('opening'); }, 200);
+      setTimeout(() => { overlay.classList.add('slide-up'); }, 700);
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        document.body.classList.remove('locked');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 1600);
+    });
+
+    // ── Personalización por hash ──────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteHash = urlParams.get('invite');
+
+    if (inviteHash && APPS_SCRIPT_URL !== 'PEGA_AQUI_TU_URL') {
+      fetch(APPS_SCRIPT_URL + '?hash=' + encodeURIComponent(inviteHash))
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok && data.guest) {
+            const { nombre, apellido } = data.guest;
+            // Mostrar banner personalizado
+            const banner   = document.getElementById('guest-banner');
+            const greeting = document.getElementById('guest-greeting');
+            greeting.textContent = 'Esta invitación es para ti, ' + nombre + (apellido ? ' ' + apellido : '') + ' 🤍';
+            banner.style.display = 'block';
+            // Pre-rellenar el formulario
+            document.getElementById('rsvp-nombre').value   = nombre;
+            document.getElementById('rsvp-apellido').value = apellido;
+            document.getElementById('rsvp-hash').value     = inviteHash;
+          }
+        })
+        .catch(() => {
+          // Si falla la petición, la página sigue funcionando sin personalización
+        });
+    } else if (inviteHash) {
+      // Apps Script URL no configurada aún — al menos guarda el hash en el form
+      document.getElementById('rsvp-hash').value = inviteHash;
+    }
+
+    // ── Formulario RSVP ───────────────────────
+    document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('rsvp-btn');
+      const asistencia = document.getElementById('rsvp-asistencia').value;
+      if (!asistencia) { alert('Por favor, indica si asistirás.'); return; }
+
+      const payload = {
+        hash:         document.getElementById('rsvp-hash').value,
+        nombre:       document.getElementById('rsvp-nombre').value.trim(),
+        apellido:     document.getElementById('rsvp-apellido').value.trim(),
+        asistencia,
+        acompanantes: document.getElementById('rsvp-acomp').value,
+        dieta:        document.getElementById('rsvp-dieta').value.trim(),
+        notas:        document.getElementById('rsvp-notas').value.trim(),
+      };
+
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+
+      if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL') {
+        // Modo demo: simula el envío
+        setTimeout(() => showSuccess(), 800);
+        return;
+      }
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      })
+      .then(r => r.json())
+      .then(data => { if (data.ok) showSuccess(); else throw new Error(data.error); })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Confirmar asistencia';
+        alert('Hubo un problema al enviar. Inténtalo de nuevo.');
+      });
+    });
+
+    function showSuccess() {
+      document.getElementById('rsvp-form').style.display    = 'none';
+      document.getElementById('rsvp-success').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
