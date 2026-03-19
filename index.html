@@ -162,17 +162,21 @@
 
     /* ─── 4. IDENTIDAD ─────────────────── */
     #s4 { background: var(--cream-dark); padding: 80px 0; }
-    .id-split { display: flex; width: 100%; max-width: 560px; }
+    .id-split { display: flex; width: 100%; max-width: 560px; align-items: flex-start; }
     .id-side {
       flex: 1; padding: 40px 24px; text-align: center;
+      display: flex; flex-direction: column; align-items: center;
       opacity: 0; transition: opacity 0.8s ease, transform 0.8s ease;
     }
     .id-side.left  { transform: translateX(-50px); border-right: 1px solid rgba(197,165,90,0.3); }
     .id-side.right { transform: translateX(50px); }
     .id-side.in    { opacity: 1; transform: translateX(0); }
-    .id-flag  { display: block; margin-bottom: 12px; line-height: 1; }
-    .id-flag svg { width: 48px; height: 32px; border-radius: 3px; }
-    .id-flag-emoji { font-size: 2.8rem; display: block; margin-bottom: 12px; }
+    .id-flag, .id-flag-emoji {
+      display: flex; align-items: center; justify-content: center;
+      height: 52px; margin-bottom: 12px;
+    }
+    .id-flag svg { width: 52px; height: 34px; border-radius: 3px; }
+    .id-flag-emoji { font-size: 2.8rem; }
     .id-label { font-family: 'Inter', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-light); margin-bottom: 6px; }
     .id-name  { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 5vw, 1.8rem); }
     .id-close {
