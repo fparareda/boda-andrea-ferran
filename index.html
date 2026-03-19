@@ -692,6 +692,12 @@
 <script>
   const URL_AS = 'https://script.google.com/macros/s/AKfycbzI7yYtl9A0jujLkgLZTTk0dqw0kgOFyzcB34TOKes-KXL4UZu92C8ikseoCg6eWgRIXQ/exec';
 
+  /* ── PRECARGA INVITADO (se lanza ANTES del click) ───── */
+  const _inviteHash = new URLSearchParams(window.location.search).get('invite');
+  const _guestPromise = _inviteHash
+    ? fetch(URL_AS + '?hash=' + encodeURIComponent(_inviteHash)).then(r => r.json()).catch(() => null)
+    : Promise.resolve(null);
+
   /* ── ESTRELLAS ─────────────────────────── */
   (function() {
     const c = document.getElementById('stars');
@@ -721,19 +727,17 @@
 
   /* ── DATO DEL INVITADO ─────────────────── */
   function loadGuest() {
-    const hash = new URLSearchParams(window.location.search).get('invite');
-    if (!hash) return;
-    fetch(URL_AS + '?hash=' + encodeURIComponent(hash))
-      .then(r => r.json())
-      .then(d => {
-        if (d.ok && d.guest) {
+    if (!_inviteHash) return;
+    // La promesa ya está en vuelo desde el inicio — solo la consumimos
+    _guestPromise.then(d => {
+        if (d && d.ok && d.guest) {
           const { nombre, apellido } = d.guest;
           const b = document.getElementById('guest-banner');
           b.textContent = 'Esta invitación es para ti, ' + nombre + (apellido ? ' ' + apellido : '') + ' 🤍';
           b.style.display = 'block';
           document.getElementById('rsvp-nombre').value = nombre;
           document.getElementById('rsvp-apellido').value = apellido || '';
-          document.getElementById('rsvp-hash').value = hash;
+          document.getElementById('rsvp-hash').value = _inviteHash;
         }
       }).catch(() => {});
   }
