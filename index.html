@@ -240,11 +240,28 @@
     .ew.in { opacity: 1; transform: scale(1); }
 
     /* ─── 10. FECHA ────────────────────── */
-    #s10 { background: var(--dark); color: var(--cream); text-align: center; }
+    #s10 {
+      background: var(--dark); color: var(--cream); text-align: center;
+      justify-content: flex-start; padding-top: 80px; padding-bottom: 0;
+    }
+    #s10 .date-content { padding-bottom: 48px; }
     .date-pre { font-family: 'Inter', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(250,247,240,0.45); margin-bottom: 20px; }
     .date-big { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 10vw, 4.5rem); line-height: 1.1; }
     .date-sub { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5.5vw, 2.2rem); font-style: italic; color: var(--gold); margin-top: 14px; }
     .date-warm { font-family: 'Inter', sans-serif; font-size: clamp(0.88rem, 3vw, 1.05rem); color: rgba(250,247,240,0.5); font-weight: 300; margin-top: 28px; line-height: 1.8; }
+    .date-photo-wrap {
+      width: 100%; max-width: 430px; position: relative; margin-top: 0;
+    }
+    .date-photo-wrap::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 80px;
+      background: linear-gradient(to bottom, var(--dark), transparent);
+      z-index: 1;
+    }
+    .date-photo-wrap img {
+      width: 100%; display: block;
+      object-fit: cover; object-position: center 20%;
+      max-height: 55vh;
+    }
 
     /* ─── 11. DETALLES ─────────────────── */
     #s11 { background: var(--cream); }
@@ -539,10 +556,15 @@
 
   <!-- 10. LA FECHA -->
   <section id="s10" class="section">
-    <div class="date-pre r">no hagáis planes el…</div>
-    <div class="date-big r d2">12 de junio<br>de 2026</div>
-    <div class="date-sub r d4">Nos casamos.</div>
-    <div class="date-warm r d6">Íntimo, pequeño<br>y muy sentido…</div>
+    <div class="date-content">
+      <div class="date-pre r">no hagáis planes el…</div>
+      <div class="date-big r d2">12 de junio<br>de 2026</div>
+      <div class="date-sub r d4">Nos casamos.</div>
+      <div class="date-warm r d6">Íntimo, pequeño<br>y muy sentido…</div>
+    </div>
+    <div class="date-photo-wrap r d6">
+      <img src="3792608313.jpeg" alt="Andrea y Ferran">
+    </div>
   </section>
 
   <!-- 11. DETALLES -->
