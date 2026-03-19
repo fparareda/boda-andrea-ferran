@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boda Andrea & Ferran</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream: #f9f5f0;
+      --gold: #b8976a;
+      --dark: #3a3028;
+      --light-brown: #d4b896;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background-color: var(--cream);
+      color: var(--dark);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      background:
+        linear-gradient(rgba(249,245,240,0.55), rgba(249,245,240,0.55)),
+        url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=800&q=80') center/cover no-repeat;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--cream));
+    }
+
+    .ornament {
+      font-size: 1.4rem;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      margin-bottom: 1.2rem;
+    }
+
+    .intro-text {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 12vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--dark);
+    }
+
+    .names .ampersand {
+      display: block;
+      font-style: italic;
+      font-size: clamp(2rem, 9vw, 3.2rem);
+      color: var(--gold);
+      margin: 0.1em 0;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2rem auto;
+    }
+
+    .date-badge {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 5vw, 1.5rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--dark);
+    }
+
+    /* Sections */
+    .section {
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--light-brown);
+      margin-bottom: 1.8rem;
+    }
+
+    /* Countdown */
+    .countdown-section {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .countdown-section .section-title {
+      color: var(--light-brown);
+    }
+
+    .countdown-section .section-subtitle {
+      color: rgba(249,245,240,0.5);
+    }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 64px;
+    }
+
+    .countdown-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 10vw, 3.5rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .countdown-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.3rem;
+    }
+
+    .countdown-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      align-self: flex-start;
+      padding-top: 0.3rem;
+    }
+
+    /* Schedule */
+    .timeline {
+      list-style: none;
+      max-width: 340px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .timeline li {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding-bottom: 1.8rem;
+      position: relative;
+    }
+
+    .timeline li:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 2.1rem;
+      top: 2.2rem;
+      bottom: 0;
+      width: 1px;
+      background: var(--light-brown);
+      opacity: 0.4;
+    }
+
+    .tl-icon {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      background: var(--cream);
+    }
+
+    .tl-content {}
+
+    .tl-time {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .tl-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      margin-top: 0.1rem;
+    }
+
+    .tl-desc {
+      font-size: 0.8rem;
+      color: #7a6a5a;
+      margin-top: 0.2rem;
+      line-height: 1.5;
+    }
+
+    /* Venue */
+    .venue-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 380px;
+      margin: 0 auto;
+      box-shadow: 0 4px 30px rgba(58,48,40,0.08);
+    }
+
+    .venue-map {
+      width: 100%;
+      height: 200px;
+      border: none;
+      display: block;
+    }
+
+    .venue-info {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .venue-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+
+    .venue-address {
+      font-size: 0.82rem;
+      color: #7a6a5a;
+      margin-top: 0.4rem;
+      line-height: 1.6;
+    }
+
+    .btn-map {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.6rem;
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-map:hover {
+      background: var(--gold);
+      color: white;
+    }
+
+    /* RSVP */
+    .rsvp-section {
+      background: linear-gradient(135deg, #3a3028 0%, #5c4a38 100%);
+      color: var(--cream);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+
+    .rsvp-section .section-title {
+      color: var(--light-brown);
+    }
+
+    .rsvp-section .section-subtitle {
+      color: rgba(249,245,240,0.5);
+    }
+
+    .rsvp-note {
+      font-size: 0.88rem;
+      color: rgba(249,245,240,0.75);
+      line-height: 1.7;
+      max-width: 300px;
+      margin: 0 auto 2rem;
+    }
+
+    .rsvp-btn {
+      display: inline-block;
+      padding: 0.85rem 2.4rem;
+      background: var(--gold);
+      color: white;
+      text-decoration: none;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .rsvp-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* Footer */
+    footer {
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    footer .names-small {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: #b0a090;
+      margin-top: 0.5rem;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="intro-text">Nos casamos</p>
+    <h1 class="names">
+      Andrea
+      <span class="ampersand">&amp;</span>
+      Ferran
+    </h1>
+    <div class="divider"></div>
+    <p class="date-badge">12 · VI · 2026 &nbsp;·&nbsp; 2:00 PM</p>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="countdown-section">
+    <p class="section-title">Cuenta atrás</p>
+    <p class="section-subtitle">Faltan...</p>
+    <div class="countdown-grid">
+      <div class="countdown-item">
+        <span class="countdown-number" id="cd-days">--</span>
+        <span class="countdown-label">Días</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="cd-hours">--</span>
+        <span class="countdown-label">Horas</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="cd-mins">--</span>
+        <span class="countdown-label">Min</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="cd-secs">--</span>
+        <span class="countdown-label">Seg</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section class="section">
+    <p class="section-title">El gran día</p>
+    <p class="section-subtitle">Programa</p>
+    <ul class="timeline">
+      <li>
+        <div class="tl-icon">💍</div>
+        <div class="tl-content">
+          <p class="tl-time">2:00 PM</p>
+          <p class="tl-title">Ceremonia</p>
+          <p class="tl-desc">El momento más esperado.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-icon">🥂</div>
+        <div class="tl-content">
+          <p class="tl-time">3:00 PM</p>
+          <p class="tl-title">Cóctel de bienvenida</p>
+          <p class="tl-desc">Aperitivos y brindis en los jardines de la hacienda.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-icon">🍽️</div>
+        <div class="tl-content">
+          <p class="tl-time">5:00 PM</p>
+          <p class="tl-title">Banquete</p>
+          <p class="tl-desc">Cena y celebración con todos nuestros seres queridos.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-icon">🎶</div>
+        <div class="tl-content">
+          <p class="tl-time">8:00 PM</p>
+          <p class="tl-title">Fiesta</p>
+          <p class="tl-desc">¡A bailar hasta que el cuerpo aguante!</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- VENUE -->
+  <section class="section" style="padding-top:0">
+    <p class="section-title">El lugar</p>
+    <p class="section-subtitle">Dónde celebramos</p>
+    <div class="venue-card">
+      <iframe
+        class="venue-map"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3974.4!2d-73.94!3d4.91!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f8c0000000000%3A0x0!2sHacienda+La+Armenia%2C+Sop%C3%B3%2C+Colombia!5e0!3m2!1ses!2sco!4v1"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Hacienda La Armenia, Sopó">
+      </iframe>
+      <div class="venue-info">
+        <p class="venue-name">Hacienda La Armenia</p>
+        <p class="venue-address">Sopó, Cundinamarca<br>Colombia</p>
+        <a
+          class="btn-map"
+          href="https://maps.google.com/?q=Hacienda+La+Armenia+Sopó+Colombia"
+          target="_blank"
+          rel="noopener">
+          Cómo llegar
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="rsvp-section">
+    <p class="section-title">Confirma tu asistencia</p>
+    <p class="section-subtitle">RSVP</p>
+    <p class="rsvp-note">
+      Por favor confirma tu asistencia antes del <strong style="color:var(--light-brown)">1 de mayo de 2026</strong>
+      para que podamos organizar todo con cariño.
+    </p>
+    <a class="rsvp-btn" href="https://wa.me/message/boda-andrea-ferran" target="_blank" rel="noopener">
+      Confirmar asistencia
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="names-small">Andrea &amp; Ferran</p>
+    <p>12 de junio de 2026 · Hacienda La Armenia, Sopó</p>
+  </footer>
+
+  <script>
+    // Countdown to June 12, 2026 at 14:00 Colombia time (UTC-5)
+    const target = new Date('2026-06-12T14:00:00-05:00');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        document.getElementById('cd-days').textContent = '0';
+        document.getElementById('cd-hours').textContent = '0';
+        document.getElementById('cd-mins').textContent = '0';
+        document.getElementById('cd-secs').textContent = '0';
+        return;
+      }
+
+      const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs  = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('cd-days').textContent  = String(days).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
+      document.getElementById('cd-secs').textContent  = String(secs).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+</body>
+</html>
