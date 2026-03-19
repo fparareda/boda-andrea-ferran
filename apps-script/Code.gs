@@ -25,9 +25,9 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const type = data.type || 'rsvp';
+    const type = data.action || data.type || 'rsvp';
 
-    if (type === 'cancion') {
+    if (type === 'cancion' || type === 'song') {
       const sheet = getOrCreateSheet(SHEET_CANCIONES, [
         'Timestamp', 'Hash', 'Nombre', 'Apellido', 'Canción', 'Artista', 'Notas'
       ]);
