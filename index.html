@@ -694,9 +694,15 @@
 
   /* ── PRECARGA INVITADO (se lanza ANTES del click) ───── */
   const _inviteHash = new URLSearchParams(window.location.search).get('invite');
-  const _guestPromise = _inviteHash
-    ? fetch(URL_AS + '?hash=' + encodeURIComponent(_inviteHash)).then(r => r.json()).catch(() => null)
-    : Promise.resolve(null);
+
+  function _fetchGuest() {
+    return fetch(URL_AS + '?hash=' + encodeURIComponent(_inviteHash))
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(d => (d && d.ok && d.guest) ? d : null)
+      .catch(() => null);
+  }
+
+  const _guestPromise = _inviteHash ? _fetchGuest() : Promise.resolve(null);
 
   /* ── ESTRELLAS ─────────────────────────── */
   (function() {
@@ -726,20 +732,24 @@
   }
 
   /* ── DATO DEL INVITADO ─────────────────── */
+  function applyGuest(d) {
+    if (!d || !d.guest) return;
+    const { nombre, apellido } = d.guest;
+    const b = document.getElementById('guest-banner');
+    b.textContent = 'Esta invitación es para ti, ' + nombre + (apellido ? ' ' + apellido : '') + ' 🤍';
+    b.style.display = 'block';
+    document.getElementById('rsvp-nombre').value = nombre;
+    document.getElementById('rsvp-apellido').value = apellido || '';
+    document.getElementById('rsvp-hash').value = _inviteHash;
+  }
+
   function loadGuest() {
     if (!_inviteHash) return;
-    // La promesa ya está en vuelo desde el inicio — solo la consumimos
+    // Usa la promesa precargada; si falló, reintenta una vez
     _guestPromise.then(d => {
-        if (d && d.ok && d.guest) {
-          const { nombre, apellido } = d.guest;
-          const b = document.getElementById('guest-banner');
-          b.textContent = 'Esta invitación es para ti, ' + nombre + (apellido ? ' ' + apellido : '') + ' 🤍';
-          b.style.display = 'block';
-          document.getElementById('rsvp-nombre').value = nombre;
-          document.getElementById('rsvp-apellido').value = apellido || '';
-          document.getElementById('rsvp-hash').value = _inviteHash;
-        }
-      }).catch(() => {});
+      if (d) { applyGuest(d); }
+      else { _fetchGuest().then(applyGuest); } // reintento
+    });
   }
 
   /* ── SCROLL OBSERVER ───────────────────── */
