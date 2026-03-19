@@ -1101,15 +1101,15 @@
     <form class="rsvp-form" id="rsvp-form" novalidate>
       <input type="hidden" id="rsvp-hash" name="hash" value="">
       <div class="rsvp-form-row">
-        <input type="text" id="rsvp-nombre" name="nombre" placeholder="Nombre" required>
-        <input type="text" id="rsvp-apellido" name="apellido" placeholder="Apellido">
+        <input type="text" id="rsvp-nombre" name="nombre" placeholder="Nombre" required readonly style="opacity:0.75;cursor:default;">
+        <input type="text" id="rsvp-apellido" name="apellido" placeholder="Apellido" readonly style="opacity:0.75;cursor:default;">
       </div>
       <select name="asistencia" id="rsvp-asistencia" required>
         <option value="" disabled selected>¿Asistirás? *</option>
         <option value="Sí">Sí, allí estaré 🎉</option>
         <option value="No">No podré ir 😢</option>
       </select>
-      <input type="number" name="acompanantes" id="rsvp-acomp" placeholder="Número de acompañantes (0 si vas solo/a)" min="0" max="10">
+      <input type="number" name="acompanantes" id="rsvp-acomp" placeholder="Número de acompañantes (0 si vas solo/a)" min="0" max="10" style="display:none">
       <input type="text" name="dieta" id="rsvp-dieta" placeholder="Dieta especial o alergia (opcional)">
       <textarea name="notas" id="rsvp-notas" placeholder="Mensaje para los novios (opcional)"></textarea>
       <button type="submit" class="rsvp-submit" id="rsvp-btn">Confirmar asistencia</button>
