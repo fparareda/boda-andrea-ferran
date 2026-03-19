@@ -207,7 +207,23 @@
     .photo-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ─── 8. VENECIA ───────────────────── */
-    #s8 { background: linear-gradient(160deg, #12202f 0%, #0b1724 100%); }
+    #s8 {
+      background: #0b1724;
+      position: relative; overflow: hidden;
+    }
+    #s8::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('3792604182.jpeg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+      transform: scale(1.04);
+      transition: transform 8s ease;
+      z-index: 0;
+    }
+    #s8.in-view::before { transform: scale(1); }
+    #s8 .story-block { position: relative; z-index: 1; }
     .fl {
       font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 5vw, 1.8rem);
       color: var(--cream); text-align: center; margin-bottom: 14px;
@@ -733,6 +749,15 @@
     document.querySelectorAll(
       '.r, .pw, .id-side, .id-close, .fl, .ef, .ep, .ew, .tl-item'
     ).forEach(el => obs.observe(el));
+
+    // Ken Burns zoom on Venice background
+    const venObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); venObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    const s8 = document.getElementById('s8');
+    if (s8) venObs.observe(s8);
   }
 
   /* ── MÚSICA ────────────────────────────── */
