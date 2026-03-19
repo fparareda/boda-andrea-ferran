@@ -1,49 +1,61 @@
 // ============================================================
 //  BODA ANDREA & FERRAN — Google Apps Script Web App
 // ============================================================
-//  Hojas requeridas dentro del Google Sheet:
-//    · "Invitados"  → Nombre | Apellido | Hash | URL Invitación
-//    · "Respuestas" → se crea sola al primer RSVP
+//  Hojas del Google Sheet:
+//    · "Invitados"       → Nombre | Apellido | Hash | URL Invitación
+//    · "Confirmaciones"  → RSVP de asistencia
+//    · "Canciones"       → Sugerencias de canciones
 // ============================================================
 
-const SHEET_GUESTS  = 'Invitados';
-const SHEET_RSVP    = 'Respuestas';
-const BASE_URL      = 'https://fparareda.github.io/boda-andrea-ferran/?invite=';
+const SHEET_GUESTS         = 'Invitados';
+const SHEET_CONFIRMACIONES = 'Confirmaciones';
+const SHEET_CANCIONES      = 'Canciones';
+const BASE_URL             = 'https://fparareda.github.io/boda-andrea-ferran/?invite=';
 
 // ─── GET: devuelve datos del invitado por hash ───────────────
 function doGet(e) {
   const hash = (e && e.parameter && e.parameter.hash) || '';
-
-  if (!hash) {
-    return jsonResponse({ ok: false, error: 'missing hash' });
-  }
-
+  if (!hash) return jsonResponse({ ok: false, error: 'missing hash' });
   const guest = findGuestByHash(hash);
-  if (guest) {
-    return jsonResponse({ ok: true, guest });
-  }
+  if (guest) return jsonResponse({ ok: true, guest });
   return jsonResponse({ ok: false, error: 'not found' });
 }
 
-// ─── POST: guarda la respuesta RSVP ─────────────────────────
+// ─── POST: enruta por tipo (rsvp | cancion) ──────────────────
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const sheet = getOrCreateSheet(SHEET_RSVP, [
-      'Timestamp', 'Hash', 'Nombre', 'Apellido',
-      'Asistencia', 'Acompañantes', 'Dieta', 'Canción', 'Notas'
-    ]);
-    sheet.appendRow([
-      new Date().toISOString(),
-      data.hash        || '',
-      data.nombre      || '',
-      data.apellido    || '',
-      data.asistencia  || '',
-      data.acompanantes || '',
-      data.dieta       || '',
-      data.cancion     || '',
-      data.notas       || ''
-    ]);
+    const type = data.type || 'rsvp';
+
+    if (type === 'cancion') {
+      const sheet = getOrCreateSheet(SHEET_CANCIONES, [
+        'Timestamp', 'Hash', 'Nombre', 'Apellido', 'Canción', 'Artista', 'Notas'
+      ]);
+      sheet.appendRow([
+        new Date().toISOString(),
+        data.hash     || '',
+        data.nombre   || '',
+        data.apellido || '',
+        data.cancion  || '',
+        data.artista  || '',
+        data.notas    || ''
+      ]);
+    } else {
+      const sheet = getOrCreateSheet(SHEET_CONFIRMACIONES, [
+        'Timestamp', 'Hash', 'Nombre', 'Apellido', 'Asistencia', 'Acompañantes', 'Dieta', 'Notas'
+      ]);
+      sheet.appendRow([
+        new Date().toISOString(),
+        data.hash         || '',
+        data.nombre       || '',
+        data.apellido     || '',
+        data.asistencia   || '',
+        data.acompanantes || '',
+        data.dieta        || '',
+        data.notas        || ''
+      ]);
+    }
+
     return jsonResponse({ ok: true });
   } catch (err) {
     return jsonResponse({ ok: false, error: err.message });
@@ -95,21 +107,18 @@ function getOrCreateSheet(name, headers) {
 
 // ============================================================
 //  HERRAMIENTA: Generar hashes para todos los invitados
-//  → Ejecuta esta función UNA VEZ desde el editor de Apps Script
-//    (menú Ejecutar → generarHashes)
 // ============================================================
 function generarHashes() {
   const ss    = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName(SHEET_GUESTS);
   if (!sheet) {
-    Browser.msgBox('Error: No se encontró la hoja "' + SHEET_GUESTS + '".\nCrea la hoja con columnas: Nombre | Apellido');
+    Browser.msgBox('Error: No se encontró la hoja "' + SHEET_GUESTS + '".');
     return;
   }
 
   const data    = sheet.getDataRange().getValues();
   const headers = data[0].map(h => h.toString().trim().toLowerCase());
 
-  // Asegurarse de que existen las columnas Hash y URL
   let colHash = headers.indexOf('hash');
   let colUrl  = headers.indexOf('url invitación');
 
@@ -124,8 +133,7 @@ function generarHashes() {
 
   let generados = 0;
   for (let i = 1; i < data.length; i++) {
-    const row  = data[i];
-    // Sólo generar si hay nombre/apellido y aún no tiene hash
+    const row    = data[i];
     const yaHash = String(sheet.getRange(i + 1, colHash + 1).getValue()).trim();
     if (!yaHash && (row[0] || row[1])) {
       const hash = generarHashAleatorio();
@@ -138,7 +146,7 @@ function generarHashes() {
 }
 
 function generarHashAleatorio() {
-  const chars = 'abcdefghjkmnpqrstuvwxyz23456789'; // sin caracteres confusos
+  const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
   let result = '';
   for (let i = 0; i < 10; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));

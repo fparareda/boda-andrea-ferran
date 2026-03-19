@@ -1111,9 +1111,24 @@
       </select>
       <input type="number" name="acompanantes" id="rsvp-acomp" placeholder="Número de acompañantes (0 si vas solo/a)" min="0" max="10">
       <input type="text" name="dieta" id="rsvp-dieta" placeholder="Dieta especial o alergia (opcional)">
-      <textarea name="notas" id="rsvp-notas" placeholder="Canción que no puede faltar / mensaje (opcional)"></textarea>
+      <textarea name="notas" id="rsvp-notas" placeholder="Mensaje para los novios (opcional)"></textarea>
       <button type="submit" class="rsvp-submit" id="rsvp-btn">Confirmar asistencia</button>
     </form>
+  </section>
+
+  <!-- ══════════ CANCIÓN ══════════ -->
+  <section class="section section-blush" id="cancion-section">
+    <p class="sec-label">Ponle banda sonora a nuestra boda</p>
+    <p class="sec-title">¿Qué canción no puede faltar?</p>
+    <p style="font-size:0.82rem;color:var(--mid);line-height:1.7;max-width:260px;margin:0 auto 1.6rem;">
+      Dinos qué canción quieres que suene ese día.<br>¡Haremos todo lo posible para complacerte!
+    </p>
+    <a id="cancion-link" href="cancion.html" class="map-btn" style="font-size:0.72rem;padding:0.75rem 2rem;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px">
+        <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      </svg>
+      Sugiere una canción
+    </a>
   </section>
 
   <!-- ══════════ FOOTER ══════════ -->
@@ -1189,6 +1204,7 @@
       if (!asistencia) { alert('Por favor, indica si asistirás.'); return; }
 
       const payload = {
+        type:         'rsvp',
         hash:         document.getElementById('rsvp-hash').value,
         nombre:       document.getElementById('rsvp-nombre').value.trim(),
         apellido:     document.getElementById('rsvp-apellido').value.trim(),
@@ -1219,6 +1235,12 @@
         alert('Hubo un problema al enviar. Inténtalo de nuevo.');
       });
     });
+
+    // ── Link a cancion.html con hash ──────────────
+    if (inviteHash) {
+      const cancionLink = document.getElementById('cancion-link');
+      if (cancionLink) cancionLink.href = 'cancion.html?invite=' + encodeURIComponent(inviteHash);
+    }
 
     function showSuccess() {
       document.getElementById('rsvp-form').style.display    = 'none';
