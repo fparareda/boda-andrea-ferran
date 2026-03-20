@@ -118,9 +118,12 @@
     .hl1 { font-size: clamp(1rem, 4vw, 1.3rem); font-style: italic; color: var(--gold); margin-bottom: 14px; }
     .hl2 { font-size: clamp(2.4rem, 9vw, 4rem); font-weight: 500; }
     #guest-banner {
-      display: none; margin-top: 28px;
-      font-family: 'Inter', sans-serif; font-size: 0.88rem;
-      color: rgba(250,247,240,0.6); font-weight: 300;
+      display: none;
+      position: absolute; top: 28px; left: 0; right: 0;
+      text-align: center; z-index: 2;
+      font-family: 'Inter', sans-serif; font-size: 0.82rem;
+      color: rgba(250,247,240,0.65); font-weight: 300;
+      letter-spacing: 0.06em; text-transform: uppercase;
     }
 
     /* ─── STORY TEXT ───────────────────── */
@@ -438,6 +441,7 @@
 <!--  0. INTRO — AVIÓN                  -->
 <!-- ═══════════════════════════════════ -->
 <div id="intro" onclick="startExp()">
+  <div id="guest-banner"></div>
   <div class="stars" id="stars"></div>
   <div class="plane-wrap">
     <svg width="96" height="126" viewBox="0 0 96 126" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -469,7 +473,6 @@
     <div class="hero-inner">
       <div class="hl hl1" id="hl1">Ya es oficialmente oficial…</div>
       <div class="hl hl2" id="hl2">Nos casamos.</div>
-      <div id="guest-banner"></div>
     </div>
   </section>
 
