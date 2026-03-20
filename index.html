@@ -471,33 +471,6 @@
     </div>
   </section>
 
-  <!-- COUNTDOWN -->
-  <section id="s-countdown" class="section" style="min-height:auto;padding:56px 32px;background:var(--cream-dark);">
-    <div class="eyebrow r">faltan</div>
-    <div id="countdown-wrap" class="r d1" style="display:flex;gap:20px;margin-top:16px;justify-content:center;align-items:flex-end;">
-      <div class="cd-unit">
-        <div class="cd-num" id="cd-days">—</div>
-        <div class="cd-label">días</div>
-      </div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit">
-        <div class="cd-num" id="cd-hours">—</div>
-        <div class="cd-label">horas</div>
-      </div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit">
-        <div class="cd-num" id="cd-mins">—</div>
-        <div class="cd-label">min</div>
-      </div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit">
-        <div class="cd-num" id="cd-secs">—</div>
-        <div class="cd-label">seg</div>
-      </div>
-    </div>
-    <div class="r d3" style="font-family:'Playfair Display',serif;font-style:italic;color:var(--text-light);font-size:0.9rem;margin-top:18px;">para el 12 · 06 · 2026</div>
-  </section>
-
   <!-- 2. EL COMIENZO -->
   <section id="s2" class="section">
     <div class="story-block">
@@ -644,6 +617,33 @@
     </div>
   </section>
 
+  <!-- COUNTDOWN -->
+  <section id="s-countdown" class="section" style="min-height:auto;padding:56px 32px;background:var(--dark);">
+    <div class="eyebrow r" style="color:rgba(250,247,240,0.45)">faltan</div>
+    <div id="countdown-wrap" class="r d1" style="display:flex;gap:20px;margin-top:16px;justify-content:center;align-items:flex-end;">
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-days" style="color:var(--cream);">—</div>
+        <div class="cd-label" style="color:rgba(250,247,240,0.45);">días</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-hours" style="color:var(--cream);">—</div>
+        <div class="cd-label" style="color:rgba(250,247,240,0.45);">horas</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-mins" style="color:var(--cream);">—</div>
+        <div class="cd-label" style="color:rgba(250,247,240,0.45);">min</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-secs" style="color:var(--cream);">—</div>
+        <div class="cd-label" style="color:rgba(250,247,240,0.45);">seg</div>
+      </div>
+    </div>
+    <div class="r d3" style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(250,247,240,0.35);font-size:0.9rem;margin-top:18px;">para el 12 · 06 · 2026</div>
+  </section>
+
   <!-- 11. DETALLES -->
   <section id="s11" class="section">
     <div class="eyebrow r">los detalles</div>
@@ -714,7 +714,7 @@
   <!-- 13. RSVP -->
   <section id="s13" class="section">
     <div class="eyebrow r">tu respuesta</div>
-    <div class="sec-title r d1">¿Nos acompañas?</div>
+    <div class="sec-title r d1">¿Nos acompañas<span id="rsvp-name-title"></span>?</div>
     <div class="sec-sub r d2">Confirma antes del <strong>1 de mayo de 2026</strong></div>
     <form class="rsvp-form r d3" id="rsvp-form" onsubmit="submitRsvp(event)">
       <input type="hidden" id="rsvp-hash" name="hash">
@@ -744,7 +744,7 @@
   <!-- 14. PLAYLIST -->
   <section id="s14" class="section">
     <div class="eyebrow r" style="color:var(--gold)">comparte tu canción</div>
-    <div class="sec-title r d1" style="color:var(--cream)">¿Qué canción no puede faltar?</div>
+    <div class="sec-title r d1" style="color:var(--cream)">¿Qué canción no puede faltar<span id="song-name-title"></span>?</div>
     <div class="sec-sub r d2" style="color:rgba(250,247,240,0.55)">Cuéntanos qué canción crees que sonará ese día.</div>
     <div class="pl-fields r d3">
       <input type="text" class="pl-input" id="pl-cancion" placeholder="Nombre de la canción (opcional)">
@@ -856,6 +856,11 @@
     document.getElementById('rsvp-nombre').value = nombre;
     document.getElementById('rsvp-apellido').value = apellido || '';
     document.getElementById('rsvp-hash').value = _inviteHash;
+    // Personalizar títulos de formularios
+    const rsvpNameEl = document.getElementById('rsvp-name-title');
+    if (rsvpNameEl) rsvpNameEl.textContent = ', ' + nombre;
+    const songNameEl = document.getElementById('song-name-title');
+    if (songNameEl) songNameEl.textContent = ', ' + nombre;
   }
 
   function loadGuest() {
