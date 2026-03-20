@@ -355,7 +355,6 @@
       transition: border-color 0.2s;
     }
     .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--gold); }
-    .f-input[readonly] { background: var(--cream-dark); color: var(--text-light); cursor: default; }
     .f-textarea { resize: none; height: 88px; }
     .btn-main {
       background: var(--dark); color: white;
@@ -371,7 +370,7 @@
 
     /* ─── 14. PLAYLIST ─────────────────── */
     #s14 { background: var(--dark); }
-    .pl-row { display: flex; gap: 10px; max-width: 380px; width: 100%; margin-top: 22px; }
+    .pl-fields { display: flex; flex-direction: column; gap: 10px; max-width: 380px; width: 100%; margin-top: 22px; }
     .pl-input {
       flex: 1; font-family: 'Inter', sans-serif; font-size: 0.9rem;
       padding: 12px 15px; border: 1.5px solid rgba(255,255,255,0.18);
@@ -381,7 +380,7 @@
     .pl-input::placeholder { color: rgba(255,255,255,0.35); }
     .pl-input:focus { border-color: var(--gold); }
     .btn-pl {
-      background: var(--gold); color: var(--dark);
+      width: 100%; background: var(--gold); color: var(--dark);
       border: none; border-radius: 10px; padding: 12px 18px;
       font-family: 'Inter', sans-serif; font-size: 0.83rem; font-weight: 500;
       cursor: pointer; white-space: nowrap;
@@ -719,14 +718,8 @@
     <div class="sec-sub r d2">Confirma antes del <strong>1 de mayo de 2026</strong></div>
     <form class="rsvp-form r d3" id="rsvp-form" onsubmit="submitRsvp(event)">
       <input type="hidden" id="rsvp-hash" name="hash">
-      <div>
-        <label class="f-label">Nombre</label>
-        <input type="text" class="f-input" id="rsvp-nombre" name="nombre" placeholder="Tu nombre" required readonly>
-      </div>
-      <div>
-        <label class="f-label">Apellido</label>
-        <input type="text" class="f-input" id="rsvp-apellido" name="apellido" placeholder="Tu apellido" readonly>
-      </div>
+      <input type="hidden" id="rsvp-nombre" name="nombre">
+      <input type="hidden" id="rsvp-apellido" name="apellido">
       <div>
         <label class="f-label">¿Asistirás?</label>
         <select class="f-select" id="rsvp-asistencia" name="asistencia" required>
@@ -753,8 +746,9 @@
     <div class="eyebrow r" style="color:var(--gold)">comparte tu canción</div>
     <div class="sec-title r d1" style="color:var(--cream)">¿Qué canción no puede faltar?</div>
     <div class="sec-sub r d2" style="color:rgba(250,247,240,0.55)">Cuéntanos qué canción crees que sonará ese día.</div>
-    <div class="pl-row r d3">
-      <input type="text" class="pl-input" id="pl-song" placeholder="Canción o artista…">
+    <div class="pl-fields r d3">
+      <input type="text" class="pl-input" id="pl-cancion" placeholder="Nombre de la canción (opcional)">
+      <input type="text" class="pl-input" id="pl-artista" placeholder="Artista (opcional)">
       <button class="btn-pl" onclick="submitSong()">Añadir 🎶</button>
     </div>
     <div class="pl-msg" id="pl-msg"></div>
@@ -935,19 +929,17 @@
 
   /* ── PLAYLIST ──────────────────────────── */
   function submitSong() {
-    const input   = document.getElementById('pl-song');
-    const msg     = document.getElementById('pl-msg');
-    const song    = input.value.trim();
-    if (!song) { msg.textContent = 'Escribe una canción primero 🎵'; return; }
+    const cancionInput = document.getElementById('pl-cancion');
+    const artistaInput = document.getElementById('pl-artista');
+    const msg          = document.getElementById('pl-msg');
+    const cancion      = cancionInput.value.trim();
+    const artista      = artistaInput.value.trim();
 
-    const hash    = new URLSearchParams(window.location.search).get('invite') || '';
-    const nombre  = (document.getElementById('rsvp-nombre')   || {}).value || '';
-    const apellido= (document.getElementById('rsvp-apellido') || {}).value || '';
+    if (!cancion && !artista) { msg.textContent = 'Escribe al menos la canción o el artista 🎵'; return; }
 
-    // Split "Canción - Artista" if the user wrote it that way
-    let cancion = song, artista = '';
-    const dash = song.indexOf(' - ');
-    if (dash !== -1) { cancion = song.slice(0, dash).trim(); artista = song.slice(dash + 3).trim(); }
+    const hash     = new URLSearchParams(window.location.search).get('invite') || '';
+    const nombre   = document.getElementById('rsvp-nombre').value   || '';
+    const apellido = document.getElementById('rsvp-apellido').value || '';
 
     msg.textContent = 'Enviando…';
 
@@ -958,7 +950,7 @@
     })
     .then(r => r.json())
     .then(d => {
-      if (d.ok) { msg.textContent = '¡Canción añadida! 🎶'; input.value = ''; }
+      if (d.ok) { msg.textContent = '¡Canción añadida! 🎶'; cancionInput.value = ''; artistaInput.value = ''; }
       else       { msg.textContent = 'Algo salió mal, inténtalo de nuevo.'; }
     })
     .catch(() => { msg.textContent = 'Error de conexión, inténtalo de nuevo.'; });
