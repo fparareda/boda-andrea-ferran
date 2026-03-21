@@ -395,26 +395,30 @@
     .pl-msg { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--gold); margin-top: 12px; text-align: center; min-height: 18px; }
 
     /* ─── 15. TIMELINE ─────────────────── */
-    #s15 { background: var(--cream); padding: 80px 0; min-height: auto; align-items: flex-start; }
+    #s15 { background: var(--cream); padding: 80px 0 64px; min-height: auto; align-items: flex-start; }
     #s15 .eyebrow, #s15 .sec-title { padding: 0 32px; }
-    .tl-scroll {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      padding: 28px 24px 20px;
-      width: 100%; box-sizing: border-box;
+    .tl-list {
+      position: relative; width: 100%; padding: 36px 32px 8px 64px;
+      box-sizing: border-box;
+    }
+    .tl-list::before {
+      content: ''; position: absolute; left: 42px; top: 36px; bottom: 16px;
+      width: 1px; background: var(--gold); opacity: 0.35;
     }
     .tl-item {
-      background: white; border-radius: 16px;
-      padding: 20px 14px; text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.055);
-      opacity: 0; transform: translateY(20px);
+      position: relative; margin-bottom: 32px;
+      opacity: 0; transform: translateY(16px);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .tl-item.in { opacity: 1; transform: translateY(0); }
-    .tl-icon { font-size: 1.7rem; margin-bottom: 9px; }
-    .tl-year { font-family: 'Inter', sans-serif; font-size: 0.67rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 5px; }
-    .tl-desc { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--dark); line-height: 1.4; }
+    .tl-item::before {
+      content: ''; position: absolute; left: -26px; top: 6px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold); opacity: 0.85;
+    }
+    .tl-item:last-child::before { background: var(--gold); opacity: 1; box-shadow: 0 0 0 3px rgba(201,169,110,0.2); width: 10px; height: 10px; left: -27px; top: 5px; }
+    .tl-year { font-family: 'Inter', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gold); margin-bottom: 4px; }
+    .tl-desc { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--dark); line-height: 1.4; }
 
     /* ─── 16. CIERRE ───────────────────── */
     #s16 {
@@ -781,13 +785,18 @@
   <section id="s15" class="section">
     <div class="eyebrow r">nuestra historia</div>
     <div class="sec-title r d1" style="margin-bottom:0;">El camino hasta aquí</div>
-    <div class="tl-scroll">
-      <div class="tl-item"><div class="tl-icon">✈️</div><div class="tl-year">2022</div><div class="tl-desc">Él vino de vacaciones a Bogotá</div></div>
-      <div class="tl-item"><div class="tl-icon">🍕</div><div class="tl-year">2022</div><div class="tl-desc">Pizza, baile y "no te ilusiones"</div></div>
-      <div class="tl-item"><div class="tl-icon">🌍</div><div class="tl-year">2023</div><div class="tl-desc">Viajes, aventuras y mucho amor</div></div>
-      <div class="tl-item"><div class="tl-icon">🏠</div><div class="tl-year">2023</div><div class="tl-desc">Sant Andreu, nuestro barrio</div></div>
-      <div class="tl-item"><div class="tl-icon">🚢</div><div class="tl-year">2024</div><div class="tl-desc">Venecia y un "sí" en los canales</div></div>
-      <div class="tl-item"><div class="tl-icon">💍</div><div class="tl-year">2026</div><div class="tl-desc">12 de junio — ¡nos casamos!</div></div>
+    <div class="tl-list">
+      <div class="tl-item"><div class="tl-year">2023</div><div class="tl-desc">Él vino de vacaciones a Bogotá</div></div>
+      <div class="tl-item"><div class="tl-year">2023</div><div class="tl-desc">Pizza, salsa y un "no te ilusiones"</div></div>
+      <div class="tl-item"><div class="tl-year">2023</div><div class="tl-desc">Bailar en las calles de Cali</div></div>
+      <div class="tl-item"><div class="tl-year">Fin de año 2023</div><div class="tl-desc">Entre Chile y Argentina</div></div>
+      <div class="tl-item"><div class="tl-year">Semana Santa 2024</div><div class="tl-desc">Puerto Rico</div></div>
+      <div class="tl-item"><div class="tl-year">2024</div><div class="tl-desc">Putumayo, Cartagena y Cundinamarca</div></div>
+      <div class="tl-item"><div class="tl-year">2024</div><div class="tl-desc">Venecia y un "sí" entre los canales</div></div>
+      <div class="tl-item"><div class="tl-year">2025</div><div class="tl-desc">México y Guatemala</div></div>
+      <div class="tl-item"><div class="tl-year">2025</div><div class="tl-desc">Europa — Catalunya e Italia</div></div>
+      <div class="tl-item"><div class="tl-year">2026</div><div class="tl-desc">Europa y…</div></div>
+      <div class="tl-item"><div class="tl-year">12 · 06 · 2026</div><div class="tl-desc">El gran día 💛</div></div>
     </div>
   </section>
 
