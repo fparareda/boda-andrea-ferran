@@ -48,11 +48,14 @@
     }
     .map-img {
       width: 100%; height: auto; display: block;
-      opacity: 0.55; mix-blend-mode: multiply;
+      /* color handled by inline feColorMatrix */
+    }
+    .map-scene::after {
+      content: none;
     }
     .map-overlay {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      pointer-events: none; overflow: visible;
+      pointer-events: none; overflow: visible; z-index: 2;
     }
 
     .intro-names {
@@ -460,9 +463,27 @@
   <div class="stars" id="stars"></div>
 
   <div class="map-scene">
-    <img class="map-img"
-         src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
-         alt="mapa del mundo" draggable="false"/>
+    <!--
+      feColorMatrix maps: dark-gray(0.3) → terracotta #CB997E, white(1.0) → white
+      Derived: sum_R=0.291 off=0.709 / sum_G=0.571 off=0.429 / sum_B=0.723 off=0.277
+    -->
+    <svg class="map-img" viewBox="0 0 2754 1396"
+         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <filter id="tc" color-interpolation-filters="sRGB"
+                x="0%" y="0%" width="100%" height="100%">
+          <feColorMatrix type="matrix" values="
+            0.097 0.097 0.097 0 0.709
+            0.190 0.190 0.190 0 0.429
+            0.241 0.241 0.241 0 0.277
+            0     0     0     0.72 0"/>
+        </filter>
+      </defs>
+      <image href="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+             x="0" y="0" width="2754" height="1396"
+             filter="url(#tc)"
+             preserveAspectRatio="xMidYMid meet"/>
+    </svg>
 
     <!--
       viewBox "0 0 200 100" = equirectangular projection
