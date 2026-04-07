@@ -47,9 +47,7 @@
     }
     @keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.9; } }
 
-    .plane-wrap { animation: floatPlane 3.5s ease-in-out infinite; }
-    @keyframes floatPlane { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-    #intro.flying .plane-wrap { animation: none; }
+    .globe-svg { width: 260px; height: 260px; display: block; }
 
     .intro-hint {
       position: absolute; bottom: 52px;
@@ -446,16 +444,57 @@
 <!-- ═══════════════════════════════════ -->
 <div id="intro" onclick="startExp()">
   <div class="stars" id="stars"></div>
-  <div class="plane-wrap">
-    <svg width="96" height="126" viewBox="0 0 96 126" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="48" cy="56" rx="8.5" ry="38" fill="white" opacity="0.97"/>
-      <path d="M48 48 L4 70 L18 70 L48 58 L78 70 L92 70 Z" fill="white" opacity="0.92"/>
-      <path d="M48 88 L30 106 L40 106 L48 96 L56 106 L66 106 Z" fill="white" opacity="0.85"/>
-      <ellipse cx="48" cy="20" rx="5.5" ry="9" fill="white"/>
-      <ellipse cx="27" cy="60" rx="4.5" ry="7" fill="rgba(255,255,255,0.55)"/>
-      <ellipse cx="69" cy="60" rx="4.5" ry="7" fill="rgba(255,255,255,0.55)"/>
-    </svg>
-  </div>
+
+  <svg class="globe-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="gc"><circle cx="140" cy="140" r="88"/></clipPath>
+      <!-- Orbit path for animateMotion (clockwise from right) -->
+      <path id="op" d="M 254,140 A 114,114 0 0,1 26,140 A 114,114 0 0,1 254,140"/>
+    </defs>
+
+    <!-- Ocean -->
+    <circle cx="140" cy="140" r="88" fill="#152035"/>
+
+    <!-- Continents -->
+    <g clip-path="url(#gc)" fill="rgba(250,247,240,0.80)">
+      <!-- North America -->
+      <path d="M58,78 L70,68 L80,66 L96,70 L106,78 L104,86 L96,90 L98,100 L102,112 L100,124 L90,128 L78,126 L72,114 L64,104 L58,94 Z"/>
+      <!-- Greenland -->
+      <ellipse cx="120" cy="66" rx="10" ry="8"/>
+      <!-- South America -->
+      <path d="M98,130 L108,128 L118,134 L122,146 L120,162 L116,176 L108,190 L102,188 L98,176 L100,160 L104,148 L100,136 Z"/>
+      <!-- Europe -->
+      <path d="M130,88 L140,84 L150,86 L156,92 L150,98 L140,100 L130,96 Z"/>
+      <!-- Africa -->
+      <path d="M130,100 L142,96 L154,100 L162,112 L164,128 L160,146 L154,162 L146,172 L136,174 L126,166 L122,150 L122,134 L126,118 Z"/>
+      <!-- Asia (main) -->
+      <path d="M156,88 L168,78 L184,72 L202,70 L216,76 L222,86 L218,96 L206,104 L192,108 L174,108 L162,102 L156,96 Z"/>
+      <!-- India -->
+      <path d="M172,108 L182,106 L188,114 L186,126 L180,132 L172,126 L168,116 Z"/>
+      <!-- SE Asia -->
+      <path d="M198,108 L210,112 L218,120 L210,124 L200,118 Z"/>
+      <!-- Australia -->
+      <path d="M194,158 L210,152 L218,158 L216,170 L210,178 L196,176 L188,166 Z"/>
+    </g>
+
+    <!-- Globe border -->
+    <circle cx="140" cy="140" r="88" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+
+    <!-- Dashed orbit ring -->
+    <circle cx="140" cy="140" r="114" fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="1.2" stroke-dasharray="7 7"/>
+
+    <!-- Paper airplane orbiting -->
+    <g>
+      <animateMotion dur="10s" repeatCount="indefinite" rotate="auto">
+        <mpath href="#op"/>
+      </animateMotion>
+      <!-- plane body -->
+      <path d="M 11,0 L -7,-6 L -4,0 L -7,6 Z" fill="white" opacity="0.96"/>
+      <!-- fold shadow -->
+      <path d="M -4,0 L -7,-6 L -7,0" fill="rgba(255,255,255,0.30)"/>
+    </g>
+  </svg>
+
   <span class="intro-hint">toca para comenzar</span>
 </div>
 
