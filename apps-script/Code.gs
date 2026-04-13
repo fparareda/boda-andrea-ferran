@@ -27,7 +27,7 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
     const type = data.action || data.type || 'rsvp';
 
-    if (type === 'cancion' || type === 'song') {
+    if (type === 'cancion' || type === 'song') {  // 'song' = alias from frontend
       const sheet = getOrCreateSheet(SHEET_CANCIONES, [
         'Timestamp', 'Hash', 'Nombre', 'Apellido', 'Canción', 'Artista', 'Notas'
       ]);
