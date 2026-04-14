@@ -126,6 +126,27 @@
     #music-btn:hover { background: rgba(107,112,92,0.80); transform: scale(1.08); }
     #music-btn svg { width: 18px; height: 18px; color: rgba(240,239,234,0.92); }
 
+    /* Music hint */
+    #music-hint {
+      position: fixed; bottom: 30px; right: 72px; z-index: 900;
+      display: none; align-items: center; gap: 6px;
+      font-family: 'Italiana', serif; font-size: 0.72rem;
+      color: rgba(240,239,234,0.65); letter-spacing: 1px;
+      opacity: 0; transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
+    #music-hint.show { display: flex; }
+    #music-hint.visible { opacity: 1; }
+    #music-hint.fade-out { opacity: 0; }
+    #music-hint svg {
+      width: 12px; height: 12px; color: rgba(240,239,234,0.5);
+      animation: hint-bounce 1.5s ease-in-out infinite;
+    }
+    @keyframes hint-bounce {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(3px); }
+    }
+
     /* ─── MAIN ─────────────────────────── */
     #main { display: none; }
     #main.show { display: block; }
@@ -813,6 +834,12 @@
     <line x1="17" y1="9" x2="23" y2="15"/>
   </svg>
 </button>
+<div id="music-hint">
+  activa el sonido
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+  </svg>
+</div>
 <audio id="bg-audio" loop preload="none">
   <source src="historia-de-un-amor.mp3" type="audio/mpeg">
 </audio>
@@ -1344,6 +1371,11 @@
       setTimeout(() => document.getElementById('hl2').classList.add('in'), 900);
       loadGuest();
       initObserver();
+      // Music hint
+      const hint = document.getElementById('music-hint');
+      setTimeout(() => { hint.classList.add('show'); requestAnimationFrame(() => hint.classList.add('visible')); }, 1800);
+      setTimeout(() => { hint.classList.add('fade-out'); }, 6000);
+      setTimeout(() => { hint.classList.remove('show','visible','fade-out'); }, 7000);
     }, 1000);
   }
 
@@ -1405,6 +1437,8 @@
     if (!a.querySelector('source')) return;
     playing ? a.pause() : a.play();
     playing = !playing;
+    const hint = document.getElementById('music-hint');
+    if (hint) { hint.classList.add('fade-out'); setTimeout(() => hint.classList.remove('show','visible','fade-out'), 800); }
     document.getElementById('music-icon-play').style.display  = playing ? 'none' : 'block';
     document.getElementById('music-icon-pause').style.display = playing ? 'block' : 'none';
   }
