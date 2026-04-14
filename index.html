@@ -175,15 +175,15 @@
       transition: opacity 0.85s ease, transform 0.85s ease;
     }
     .hl.in { opacity: 1; transform: translateY(0); }
-    .hl1 { font-size: clamp(1.2rem, 5vw, 1.65rem); color: white; margin-bottom: 14px; line-height: 1.55; }
+    .hl1 { font-size: clamp(1.8rem, 6.5vw, 2.8rem); color: white; margin-bottom: 14px; line-height: 1.4; }
     .hl2 { font-size: clamp(1.8rem, 6.5vw, 2.8rem); font-weight: 500; color: white; }
     #guest-banner {
       display: none;
-      position: absolute; top: 32px; left: 0; right: 0;
+      position: absolute; top: 100px; left: 0; right: 0;
       text-align: center; z-index: 2;
       font-family: 'Italiana', serif;
-      font-size: clamp(0.85rem, 3.2vw, 1rem);
-      color: rgba(250,247,240,0.55); font-weight: 400;
+      font-size: clamp(1.1rem, 4vw, 1.35rem);
+      color: rgba(250,247,240,0.7); font-weight: 400;
       letter-spacing: 0.01em;
     }
 
@@ -289,8 +289,8 @@
     }
     .vp-line {
       font-family: 'Italiana', serif;
-      font-size: clamp(1.1rem, 4vw, 1.35rem);
-      color: var(--text); line-height: 1.75; margin-bottom: 2px;
+      font-size: clamp(1.4rem, 5.2vw, 1.85rem);
+      color: var(--text); line-height: 1.65; margin-bottom: 2px;
     }
     .fl {
       font-family: 'Italiana', serif; font-size: clamp(1.2rem, 5vw, 1.8rem);
@@ -584,7 +584,7 @@
 
     /* ─── S14 OVERRIDES ────────────────── */
     #s14 .sec-title { font-size: clamp(2.1rem, 7vw, 3rem); }
-    #s14 .sec-sub { font-size: clamp(1rem, 3.6vw, 1.15rem); color: #6B705C; line-height: 1.85; }
+    #s14 .sec-sub { font-size: clamp(1.2rem, 4.5vw, 1.45rem); color: #6B705C; line-height: 1.75; }
 
     /* ─── S13 OVERRIDES ────────────────── */
     #s13 .sec-title { color: var(--olive-dark); font-size: clamp(2.2rem, 7.5vw, 3.2rem); }
@@ -797,18 +797,20 @@
 
 
   <span class="intro-hint">toca para comenzar</span>
+  <span class="intro-hint" style="margin-top:6px;font-size:0.52rem;opacity:0.5;letter-spacing:1.5px;">♪ mejor con sonido</span>
 </div>
 
 <!-- MÚSICA -->
 <button id="music-btn" onclick="toggleMusic()" aria-label="Música">
   <svg id="music-icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 18V5l12-2v13"/>
-    <circle cx="6" cy="18" r="3"/>
-    <circle cx="18" cy="16" r="3"/>
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
   </svg>
   <svg id="music-icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-    <rect x="6" y="4" width="4" height="16" rx="1"/>
-    <rect x="14" y="4" width="4" height="16" rx="1"/>
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
   </svg>
 </button>
 <audio id="bg-audio" loop preload="none">
@@ -845,10 +847,11 @@
       <img src="3792610077.jpeg" alt="Venecia" loading="lazy">
     </div>
     <div class="venice-poem">
-      <div class="vp-line r d2">En Venecia, entre canales y primavera,</div>
+      <div class="vp-line r d2">En Venecia, entre canales, estrechas calles y primavera,</div>
       <div class="vp-line r d3">nos prometimos construir esto:</div>
       <div class="vp-line r d4" style="font-weight:600;">un día lleno de amor, de ustedes, de nosotros.</div>
     </div>
+    <div class="r d5" style="font-family:'Italiana',serif;font-size:clamp(1.2rem,4.2vw,1.5rem);color:rgba(74,84,64,0.35);letter-spacing:2px;margin-top:48px;text-align:center;">Andrea & Ferran</div>
 
   </section>
 
@@ -867,14 +870,14 @@
     </svg>
     <!-- Marca de agua -->
     <img src="marca de agua.png" alt="" class="marca-agua marca-agua--light">
-    <div class="invite-inner">
-      <div class="inv-line r"><span id="invite-name-title"></span>reserva el</div>
-      <div class="inv-date r d1">12 de junio de 2026</div>
-      <div class="inv-spacer"></div>
-      <div class="inv-big r d3">Nos casamos.</div>
-      <div class="inv-spacer"></div>
-      <div class="inv-body inv-gold r d4" style="font-size:clamp(1rem,3.8vw,1.3rem);">Una ceremonia íntima, sentida,</div>
-      <div class="inv-body inv-gold r d4" style="font-size:clamp(1rem,3.8vw,1.3rem);">con quienes, como tú, son parte de lo que somos.</div>
+    <div class="invite-inner" style="max-width:600px;">
+      <div class="inv-body r">Así que<span id="invite-name-title"> </span>…</div>
+      <div class="inv-body r d1">no hagáis planes el <strong style="font-weight:600;">12 de junio de 2026</strong>,</div>
+      <div class="inv-body r d2">porque ya los hemos hecho por ti.</div>
+      <div class="inv-body r d3">Ese día… nos casamos.</div>
+      <div class="inv-body r d4">Con una ceremonia íntima, pequeña y profundamente sentida,</div>
+      <div class="inv-body inv-gold r d5">con quienes, como tú, son parte de lo que somos.</div>
+      <div class="r d6" style="font-family:'Italiana',serif;font-size:clamp(1.2rem,4.2vw,1.5rem);color:rgba(74,84,64,0.35);letter-spacing:2px;margin-top:72px;text-align:center;">Andrea & Ferran</div>
     </div>
   </section>
 
@@ -1165,6 +1168,7 @@
       <button type="submit" class="btn-main">Confirmar asistencia</button>
       <div class="f-msg" id="rsvp-msg"></div>
     </form>
+    <div class="r d5" style="font-family:'Italiana',serif;font-size:clamp(1.2rem,4.2vw,1.5rem);color:rgba(74,84,64,0.3);letter-spacing:2px;margin-top:48px;text-align:center;">Andrea & Ferran</div>
   </section>
 
   <!-- 14. PLAYLIST -->
@@ -1223,6 +1227,41 @@
         </div>
       </div>
 
+    </div>
+    <div class="r d5" style="font-family:'Italiana',serif;font-size:clamp(1.2rem,4.2vw,1.5rem);color:rgba(240,239,234,0.3);letter-spacing:2px;margin-top:48px;text-align:center;">Andrea & Ferran</div>
+  </section>
+
+  <!-- SLIDE FINAL -->
+  <section id="s-final" class="section" style="background:linear-gradient(160deg, #B7B7A4 0%, #A5A58D 100%);padding:80px 28px;position:relative;overflow:hidden;min-height:100vh;justify-content:center;">
+    <!-- Textura -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.18;" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+      <filter id="sfTex">
+        <feTurbulence type="fractalNoise" baseFrequency="0.88 0.38" numOctaves="6" seed="7" result="nz"/>
+        <feColorMatrix type="matrix" in="nz" values="0 0 0 0 0.6  0 0 0 0 0.62  0 0 0 0 0.5  0 0 0 0.5 0" result="pc"/>
+        <feComposite in="pc" in2="SourceGraphic" operator="in" result="mp"/>
+        <feBlend in="SourceGraphic" in2="mp" mode="multiply"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#sfTex)" fill="#A5A58D"/>
+    </svg>
+
+    <!-- Sello -->
+    <img src="sello.png" alt="Sello A&F" style="width:clamp(100px,22vw,140px);margin-bottom:40px;opacity:0.85;position:relative;z-index:1;">
+
+    <!-- Te esperamos -->
+    <div class="r d1" style="font-family:'Italiana',serif;font-size:clamp(2.2rem,8vw,3.2rem);color:#4a5440;text-align:center;position:relative;z-index:1;line-height:1.3;">¡Te esperamos!</div>
+
+    <!-- Andrea & Ferran -->
+    <div class="r d2" style="font-family:'Italiana',serif;font-size:clamp(1.2rem,4.2vw,1.5rem);color:rgba(74,84,64,0.45);letter-spacing:2px;margin-top:48px;text-align:center;position:relative;z-index:1;">Andrea & Ferran</div>
+
+    <!-- Pie ecológico -->
+    <div class="r d3" style="position:absolute;bottom:32px;left:0;right:0;text-align:center;z-index:1;">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-family:'Italiana',serif;font-size:clamp(0.55rem,2vw,0.7rem);color:rgba(74,84,64,0.4);letter-spacing:1.5px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+          <path d="M12 21 Q4 16 4 9 Q4 4 12 3 Q20 4 20 9 Q20 16 12 21Z"/>
+          <path d="M12 3 Q12 12 9 19"/>
+        </svg>
+        invitación amigable con el medio ambiente
+      </div>
     </div>
   </section>
 
@@ -1322,7 +1361,7 @@
     const rsvpNameEl = document.getElementById('rsvp-name-title');
     if (rsvpNameEl) rsvpNameEl.textContent = ', ' + nombre;
     const inviteNameEl = document.getElementById('invite-name-title');
-    if (inviteNameEl) inviteNameEl.textContent = nombre + ', ';
+    if (inviteNameEl) inviteNameEl.textContent = ', ' + nombre;
     const songNameEl = document.getElementById('song-name-title');
     if (songNameEl) songNameEl.textContent = ', ' + nombre;
   }
