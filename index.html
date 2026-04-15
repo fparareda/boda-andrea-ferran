@@ -128,8 +128,8 @@
 
     /* Music hint */
     #music-hint {
-      position: fixed; bottom: 30px; right: 72px; z-index: 900;
-      display: none; align-items: center; gap: 6px;
+      position: fixed; bottom: 76px; right: 22px; z-index: 900;
+      display: none; flex-direction: column; align-items: center; gap: 4px;
       font-family: 'Italiana', serif; font-size: 0.72rem;
       color: rgba(240,239,234,0.65); letter-spacing: 1px;
       opacity: 0; transition: opacity 0.8s ease;
@@ -143,8 +143,8 @@
       animation: hint-bounce 1.5s ease-in-out infinite;
     }
     @keyframes hint-bounce {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(3px); }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(3px); }
     }
 
     /* ─── MAIN ─────────────────────────── */
@@ -835,9 +835,9 @@
   </svg>
 </button>
 <div id="music-hint">
-  activa el sonido
+  <span>activa el sonido</span>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+    <path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/>
   </svg>
 </div>
 <audio id="bg-audio" loop preload="none">
